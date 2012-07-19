@@ -4,14 +4,38 @@
 // Going out for dinner at Cap'n Jack's
 
 // Variables
-var family = ["Papa", "Grandma", "Aunt Mary", "Aunt Sharon", "Mom", "Dad", "Nick", "Deanna", "Danielle"],
+var family = ["Mom", "Dad", "Nick", "Deanna", "Danielle"],
 	timeOfDay = 17,	// 5:00pm
 	directions = "",
 	table = {},
-	order = [],
-	taxRate = .07,	
+	order = [],	
 	tipAmount = .20
 ;
+
+var car = {
+	"name": "Grand Marquis",
+	"passengers": [],
+	"capacity": 6,
+	"getInCar": function (people) {	// Mutator Method 
+		var c = 0;	// counter
+		while (c < people.length) {
+			if (c === car.capacity) {
+				end;
+			} else {
+				car.passengers.push(people[c]);
+				c++;
+			}
+			
+		}
+	},
+	"whoIsInCar": function () {				// Procedure Method
+		var peopleInCar = "";	
+		for (var i = 0; i <= (car.passengers.length - 1); i++) {
+			peopleInCar += (car.passengers[i] + ", ");
+		}
+		console.log("The " + car.name + " has " + peopleInCar + "in it.");
+	}
+};
 
 var restaurant = {
 	"name": "Cap'n Jack's",
@@ -20,10 +44,10 @@ var restaurant = {
 	"directions": "Take Route 1 East for 5 miles, turn right onto Succotash Rd. Drive 1.4 miles, restaurant will be on your left.",
 	"table": {
 		"number": 16,
-		"seats": 10,
+		"seats": 6,
 		"smoking": false	
 	},
-	"isOpen": function (time) {			// Mutator Method
+	"isOpen": function (time) {			// Function Method?
 				if (time > 11) {
 					return true;
 				} else {
@@ -59,19 +83,32 @@ var placeOrder = function (customers, menu) {
 };
 
 // Math Function for calculating the bill
-var getBill = function (tab, tax, tip) {
+var getBill = function (tab, tip) {
+	var tax = .07;
 	return (tab * (1 + tax) * (1 + tip));
 };
 
+// 
+var wereWeSatisfied = function (table, bill) {
+	if (table.smoking === false && bill <= 100) {
+		return true;
+	} else {
+		return false;
+	}
+};
 
 
 // Main Code
 if (restaurant.isOpen(timeOfDay)) {
+	car.getInCar(family);
+	car.whoIsInCar();
 	directions = restaurant.getDirections();
 	table = restaurant.getTable();
 	order = placeOrder(family, restaurant.menu);
-	bill = getBill(order[(order.length - 1)], taxRate, tipAmount);
-	
+	bill = getBill(order[(order.length - 1)], tipAmount);
+	satisfied = wereWeSatisfied(table, bill);
+	car.getInCar(family);
+		
 	// Output
 	console.log("To get to " + restaurant.name + ", we need to: " + directions);
 	console.log("Now that we're here, let's sit down. We're at table " + table.number + ".");
@@ -84,6 +121,11 @@ if (restaurant.isOpen(timeOfDay)) {
 		console.log(family[i] + " ordered the " + order[i] + ".");
 	}
 	console.log("The total bill came out to $" + (bill.toFixed(2)) + ", including tax and tip.");
+	if (satisfied) {
+		console.log("We were satisfied and had a great dinner!");
+	} else {
+		console.log("Things could have been better tonight."); 
+	}
 } else {
 	console.log("Cap'n Jack's isn't open yet, we'll have to go later.");
 }
