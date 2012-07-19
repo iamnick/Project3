@@ -15,25 +15,34 @@ var family = ["Mom", "Dad", "Nick", "Deanna", "Danielle"],
 var car = {
 	"name": "Grand Marquis",
 	"passengers": [],
-	"capacity": 6,
+	"capacity": 5,
+	"full": false,
 	"getInCar": function (people) {	// Mutator Method 
 		var c = 0;	// counter
 		while (c < people.length) {
-			if (c === car.capacity) {
-				end;
-			} else {
-				car.passengers.push(people[c]);
-				c++;
-			}
-			
+			car.passengers.push(people[c]);
+			c++;
+			if (c === car.capacity) {	
+				car.full = true;
+				return;
+			}	
 		}
 	},
-	"whoIsInCar": function () {				// Procedure Method
+	"whoIsInCar": function (people) {				// Procedure Method
 		var peopleInCar = "";	
+		var peopleNotInCar = "";
 		for (var i = 0; i <= (car.passengers.length - 1); i++) {
 			peopleInCar += (car.passengers[i] + ", ");
 		}
 		console.log("The " + car.name + " has " + peopleInCar + "in it.");
+		if (car.full === true && people.length > car.capacity) {
+			for (var i = car.capacity; i <= (people.length - 1); i++) {
+				peopleNotInCar += (people[i] + ", ");
+			}
+			console.log(peopleNotInCar + "aren't in the car! They'll be left behind!");
+		} else {
+			console.log("Everyone is in the car, nobody left behind!");
+		}
 	}
 };
 
@@ -101,14 +110,13 @@ var wereWeSatisfied = function (table, bill) {
 // Main Code
 if (restaurant.isOpen(timeOfDay)) {
 	car.getInCar(family);
-	car.whoIsInCar();
+	car.whoIsInCar(family);
 	directions = restaurant.getDirections();
 	table = restaurant.getTable();
 	order = placeOrder(family, restaurant.menu);
 	bill = getBill(order[(order.length - 1)], tipAmount);
 	satisfied = wereWeSatisfied(table, bill);
-	car.getInCar(family);
-		
+				
 	// Output
 	console.log("To get to " + restaurant.name + ", we need to: " + directions);
 	console.log("Now that we're here, let's sit down. We're at table " + table.number + ".");
