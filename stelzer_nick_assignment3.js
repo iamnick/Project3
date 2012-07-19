@@ -6,6 +6,8 @@
 // Variables
 var family = ["Papa", "Grandma", "Aunt Mary", "Aunt Sharon", "Mom", "Dad", "Nick", "Deanna", "Danielle"],
 	timeOfDay = 17,	// 5:00pm
+	directions = "",
+	table = {},
 	order = [],
 	taxRate = .07,	
 	tipAmount = .20
@@ -15,13 +17,21 @@ var restaurant = {
 	"name": "Cap'n Jack's",
 	"menu": json.menuItems,
 	"menuItems": json.menuItems.length,
+	"directions": "Take Route 1 East for 5 miles, turn right onto Succotash Rd. Drive 1.4 miles, restaurant will be on your left.",
+	"table": {
+		"number": 16,
+		"seats": 10,
+		"smoking": false	
+	},
 	"isOpen": function (time) {			// Mutator Method
 				if (time > 11) {
 					return true;
 				} else {
 					return false;
 				}
-			  }
+			  },
+	"getDirections": function () { return restaurant.directions; },	// Accessor Methods
+	"getTable": function () { return restaurant.table; }
 
 
 };
@@ -57,10 +67,19 @@ var getBill = function (tab, tax, tip) {
 
 // Main Code
 if (restaurant.isOpen(timeOfDay)) {
+	directions = restaurant.getDirections();
+	table = restaurant.getTable();
 	order = placeOrder(family, restaurant.menu);
 	bill = getBill(order[(order.length - 1)], taxRate, tipAmount);
 	
 	// Output
+	console.log("To get to " + restaurant.name + ", we need to: " + directions);
+	console.log("Now that we're here, let's sit down. We're at table " + table.number + ".");
+	if (table.smoking) {
+		console.log("It's in the smoking section, and seats " + table.seats + " people.");
+	} else {
+		console.log("It's in the non-smoking section, and seats " + table.seats + " people.");
+	}
 	for (var i = 0; i < family.length; i++) {
 		console.log(family[i] + " ordered the " + order[i] + ".");
 	}
